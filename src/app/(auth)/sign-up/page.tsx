@@ -1,13 +1,40 @@
 "use client";
 import { Icons } from "@/components/Icons";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  AuthCredentialsValidator,
+  TAuthCredentialsValidator,
+} from "@/lib/validators/account-credentials-validator";
+import { trpc } from "@/trpc/client";
+
 
 const page = () => {
+
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TAuthCredentialsValidator>({
+    resolver: zodResolver(AuthCredentialsValidator),
+  });
+
+  const {data} = trpc.anyApiRoute.useQuery()
+  console.log(data);
+  
+  const onSubmit = ({email, password}:TAuthCredentialsValidator) =>{
+    //send data to the server
+     
+    
+  }
+
   return (
     <>
       <div className="container relative flex pt-20 flex-col items-center justify-center lg:px-0">
@@ -28,13 +55,14 @@ const page = () => {
             </Link>
           </div>
           <div className="grid gap-6">
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-2">
                 <div className="grid gap-2 py-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
+                    {...register('email')}
                     className={cn({
-                      'focus-visible:ring-red-500': true,
+                      "focus-visible:ring-red-500": errors.email,
                     })}
                     placeholder="you@example.com"
                   />
@@ -42,12 +70,14 @@ const page = () => {
                 <div className="grid gap-2 py-2">
                   <Label htmlFor="password">Password</Label>
                   <Input
+                  {...register('password')}
                     className={cn({
-                      "focus-visible:ring-red-500": true,
+                      "focus-visible:ring-red-500": errors.password,
                     })}
                     placeholder="Password"
                   />
                 </div>
+                <Button>Sign-up</Button>
               </div>
             </form>
           </div>
