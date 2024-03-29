@@ -2,6 +2,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+Installation:
+
+- Run npm install
+- Run npm install -g ts-node
+- Copy .env.Example and Rename to .env and make sure to add the credentials.
+
+
 First, run the development server:
 
 ```bash
