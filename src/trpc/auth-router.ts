@@ -30,7 +30,7 @@ export const authRouter = router({
       return { success: true, sentToEmail: email };
     }),
 
-    //verify email is valid token
+  //verify email is valid token
   verifyEmail: publicProcedure
     .input(z.object({ token: z.string() }))
     .query(async ({ input }) => {
@@ -45,4 +45,26 @@ export const authRouter = router({
       if (!isVerified) throw new TRPCError({ code: "UNAUTHORIZED" });
       return { success: true };
     }),
+
+  //sign in
+  signIn: publicProcedure.input(AuthCredentialsValidator).mutation(async({input, ctx})=>{
+    const {email, password} = input
+    //cxt means context
+    const {res} = ctx
+    const payload = await getPayloadClient();
+    try {
+        await payload.login({
+            collection: "users",
+            data: {
+                email,
+                password,
+            },
+            res,
+        })
+
+        return {success: true}
+    } catch (error) {
+        throw new TRPCError({code: "UNAUTHORIZED"})
+    }
+  })
 });
