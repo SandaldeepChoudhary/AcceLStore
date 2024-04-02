@@ -10,13 +10,13 @@ const perks = [
     name: "Instant Delivery",
     Icon: ArrowDownToLine,
     description:
-      "Get your asssets delivered to your email in seconds and download them right away.",
+      "Get your assets delivered to your email in seconds and download them right away.",
   },
   {
     name: "Guaranteed Quality",
     Icon: CheckCircle,
     description:
-      "Every asset on our platfrom is verified by our team to ensure our highest quality standards. Not happy? We offer a 30-days refund guarantee. ",
+      "Every asset on our platform is verified by our team to ensure our highest quality standards. Not happy? We offer a 30-days refund guarantee. ",
   },
   {
     name: "For the planet",
@@ -33,7 +33,7 @@ export default function Home() {
         <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
             Your marketplace for high quality{" "}
-            <span className="text-blue-600">digital assests</span>.
+            <span className="text-blue-600">digital assets</span>.
           </h1>
           <p className="mt-6 text-lg max-w-prose text-muted-foreground">
             Welcome to AcceL Store. Every asset on platform is verified by our
