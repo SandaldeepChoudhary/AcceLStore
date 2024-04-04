@@ -42,14 +42,14 @@ export const Products: CollectionConfig ={
         options: PRODUCT_CATEGORIES.map(({label, value})=> ({label, value})),
         required: true,
     },
-    // {
-    //     name: "product_files",
-    //     label: "Product file(s)",
-    //     type: "relationship",
-    //     required: true,
-    //     relationTo: "product_files",
-    //     hasMany: false, //If Users Wants to Upload two or more product file then set this to true.
-    // },
+    {
+        name: "product_files",
+        label: "Product file(s)",
+        type: "relationship",
+        required: true,
+        relationTo: "product_files",
+        hasMany: false, //If Users Wants to Upload two or more product file then set this to true.
+    },
     {
         name:"approvedFroSales",
         label:"Product status",
