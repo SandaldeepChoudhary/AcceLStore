@@ -51,7 +51,7 @@ export const Products: CollectionConfig ={
         hasMany: false, //If Users Wants to Upload two or more product file then set this to true.
     },
     {
-        name:"approvedFroSales",
+        name:"approvedForSales",
         label:"Product status",
         type: "select",
         defaultValue: "pending",
