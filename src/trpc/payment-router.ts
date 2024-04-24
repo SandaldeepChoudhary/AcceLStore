@@ -66,7 +66,7 @@ export const paymentRouter = router({
           success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
           //if payment is cancelled
           cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart`,
-          payment_method_types: ["card", "amazon_pay", "paypal", "mobilepay"],
+          payment_method_types: ["card"],
           mode: "payment",
           //to unlock the items
           metadata: {
