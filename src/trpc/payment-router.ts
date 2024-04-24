@@ -37,7 +37,7 @@ export const paymentRouter = router({
         collection: "orders",
         data: {
           _isPaid: false,
-          products: filteredProducts,
+          products: filteredProducts.map((prod)=> prod.id),
           user: user.id,
         },
       });
@@ -75,6 +75,11 @@ export const paymentRouter = router({
           },
           line_items,
         });
-      } catch (error) {}
+
+        return { url: stripeSession.url };
+      } catch (error) {
+        console.log(error);
+        return { url: null };
+      }
     }),
 });
