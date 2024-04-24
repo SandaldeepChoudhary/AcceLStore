@@ -3,19 +3,31 @@ import { Button } from "@/components/ui/button";
 import { PRODUCT_CATEGORIES } from "@/config";
 import { useCart } from "@/hooks/use-cart";
 import { cn, formatPrice } from "@/lib/utils";
+import { trpc } from "@/trpc/client";
 import { Check, Loader2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Page = () => {
   const { items, removeItem } = useCart();
+
+  const router = useRouter();
+
+  const { mutate: createCheckOutSession, isLoading } =
+    trpc.payment.createSession.useMutation({
+      onSuccess: ({ url }) => {
+        if (url) router.push(url);
+      },
+    });
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const cartTotal = items.reduce(
     (total, { product }) => total + product.price,
     0
   );
 
+  const productIds = items.map(({product})=> product.id)
   const fee = 1;
 
   useEffect(() => {
@@ -28,7 +40,7 @@ const Page = () => {
         <h1 className="text-gray-900 font-bold tracking-tight sm:text-4xl">
           Shopping Cart
         </h1>
-        <div className="mt-12 lg-grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+        <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
           <div
             className={cn("lg:col-span-7", {
               "rounded-lg border-2 border-dashed border-zinc-200 p-12":
@@ -107,14 +119,18 @@ const Page = () => {
                           </div>
                           <div className="mt-4 sm:mt-0 sm:pr-9 w-20">
                             <div className="absolute right-0 top-0">
-                              <Button aria-label="remove product" variant="ghost" onClick={() => removeItem(product.id)}>
+                              <Button
+                                aria-label="remove product"
+                                variant="ghost"
+                                onClick={() => removeItem(product.id)}
+                              >
                                 <X className="h-5 w-5" aria-hidden="true" />
                               </Button>
                             </div>
                           </div>
                         </div>
                         <p className="mt-4 flex space-x-2 text-sm text-gray-700">
-                          <Check className="h-5 w-5 flex-shrink-0 text-green-500"/>
+                          <Check className="h-5 w-5 flex-shrink-0 text-green-500" />
                           <span>Eligible for instant delivery</span>
                         </p>
                       </div>
@@ -129,7 +145,11 @@ const Page = () => {
               <div className="flex items-center justify-between">
                 <p className="text-sm text-gray-600">Subtotal</p>
                 <p className="text-sm font-medium text-gray-900">
-                  {isMounted ? formatPrice(cartTotal): <Loader2 className="h-4 w-4 animate-spin text-muted-foreground"/>}
+                  {isMounted ? (
+                    formatPrice(cartTotal)
+                  ) : (
+                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  )}
                 </p>
               </div>
               <div className="flex items-center justify-between border-t border-x-gray-200 pt-4">
@@ -137,15 +157,38 @@ const Page = () => {
                   <span>Flat Transaction Fee</span>
                 </div>
                 <div className="text-sm font-medium text-gray-900">
-                  {isMounted ? formatPrice(fee): <Loader2 className="h-4 w-4 animate-spin text-muted-foreground"/> }
+                  {isMounted ? (
+                    formatPrice(fee)
+                  ) : (
+                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  )}
                 </div>
               </div>
               <div className="flex items-center justify-between border-t border-x-gray-200 pt-4">
-                <div className="text-base font-medium text-gray-900">Order Total</div>
-                <div className="text-base font-medium text-gray-900"> {isMounted ? formatPrice(cartTotal + fee): <Loader2 className="h-4 w-4 animate-spin text-muted-foreground"/> }</div>
+                <div className="text-base font-medium text-gray-900">
+                  Order Total
+                </div>
+                <div className="text-base font-medium text-gray-900">
+                  {" "}
+                  {isMounted ? (
+                    formatPrice(cartTotal + fee)
+                  ) : (
+                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  )}
+                </div>
               </div>
-              </div>
-              <div className="mt-6"><Button className="w-full" size="lg">Checkout</Button></div>
+            </div>
+            <div className="mt-6">
+              <Button
+              disabled= {items.length === 0 || isLoading}
+                className="w-full"
+                size="lg"
+                onClick={() => createCheckOutSession({ productIds })}
+              >
+                {isLoading ? <Loader2 className="w-4 h-4 animate-spin mr-1.5"/>: null}
+                Checkout
+              </Button>
+            </div>
           </section>
         </div>
       </div>
