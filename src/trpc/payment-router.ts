@@ -53,7 +53,7 @@ export const paymentRouter = router({
 
       line_items.push({
         //From Stripe Create Products Page
-        price: "price_1P90SZSB59offld6jC1NXY82",
+        price: "price_1PA5QASB59offld6dn7Hd38w",
         quantity: 1,
         //disabling multiple transaction fee
         adjustable_quantity: {
@@ -68,7 +68,7 @@ export const paymentRouter = router({
           cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/cart`,
           payment_method_types: ["card"],
           mode: "payment",
-          //to unlock the items
+          billing_address_collection: "required",
           metadata: {
             userId: user.id,
             orderId: order.id,
