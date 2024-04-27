@@ -1,7 +1,7 @@
 
 import { formatPrice } from "../../lib/utils"
 import {Product} from "../../payload-types"
-import {Body, Container, Column, Head, Hr, Html, Img, Link, Preview, Row, Section, Text } from "@react-email/components"
+import {Body, Container, Column, Head, Hr, Html, Img, Link, Preview, Row, Section, Text, render } from "@react-email/components"
 import {format} from "date-fns"
 
 interface ReceiptEmailProps{
@@ -148,6 +148,13 @@ products
 </Html>
     )
 }
+
+export const ReceiptEmailHtml = (
+    props: ReceiptEmailProps
+)=> render(<ReceiptEmail {...props}/>, {
+    pretty: true,
+})
+
 const main = {
     fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
     backgroundColor: '#ffffff',
