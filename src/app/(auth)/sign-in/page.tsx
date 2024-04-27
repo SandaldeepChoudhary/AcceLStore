@@ -14,13 +14,13 @@ import {
 } from "@/lib/validators/account-credentials-validator";
 import { trpc } from "@/trpc/client";
 import { toast } from "sonner";
-import { ZodError } from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const page = () => {
+const SignInPage = () => {
   const searchParams = useSearchParams();
   const isSeller = searchParams.get("as") === "seller";
   const origin = searchParams.get("origin");
+  const router = useRouter();
 
   const continueAsSeller = () => {
     router.push("?as=seller");
@@ -36,7 +36,7 @@ const page = () => {
     resolver: zodResolver(AuthCredentialsValidator),
   });
 
-  const router = useRouter();
+ 
 
   //Validations and redirection
   const { mutate: signIn, isLoading } = trpc.auth.signIn.useMutation({
@@ -159,4 +159,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SignInPage;

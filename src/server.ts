@@ -7,6 +7,8 @@ import { inferAsyncReturnType } from "@trpc/server";
 import bodyParser from "body-parser";
 import { IncomingMessage } from "http";
 import { stripeWebHookHandler } from "./webhooks";
+import nextBuild from "next/dist/build";
+import path from "path";
 
 const app = express();
 
@@ -22,16 +24,17 @@ const createContext = ({
 
 export type ExpressContext = inferAsyncReturnType<typeof createContext>;
 //For Stripe
-export type WebHookRequest =IncomingMessage & {rawBody: Buffer} 
+export type WebHookRequest = IncomingMessage & { rawBody: Buffer };
 
 const start = async () => {
   //For Stripe Communication
   const webhookMiddleware = bodyParser.json({
-    verify: (req: WebHookRequest, _, buffer)=>{
-      req.rawBody = buffer
-    }
-  })
-  app.post("/api/webhooks/stripe", webhookMiddleware, stripeWebHookHandler)
+    verify: (req: WebHookRequest, _, buffer) => {
+      req.rawBody = buffer;
+    },
+  });
+  app.post("/api/webhooks/stripe", webhookMiddleware, stripeWebHookHandler);
+
   const payload = await getPayloadClient({
     initOptions: {
       express: app,
@@ -40,6 +43,17 @@ const start = async () => {
       },
     },
   });
+
+  if (process.env.NEXT_BUILD) {
+    app.listen(PORT, async () => {
+      payload.logger.info("Next.js is building for production");
+      //@ts-expect-error  -this is use to ignore the error, uncomment this and see for yourself
+      await nextBuild(path.join(__dirname, "../"));
+
+      process.exit();
+    });
+    return 
+  }
 
   app.use(
     "/api/trpc",
