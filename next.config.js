@@ -4,9 +4,13 @@ const nextConfig = {
     domains: ["localhost", "accelstore.up.railway.app"],
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "accelstore.up.railway.app",
+        protocol: "http",
+        hostname: "localhost",
         pathname: "**",
+        port: "3000",
+      },
+      {
+        hostname: "accelstore.up.railway.app",
       },
     ],
   },
