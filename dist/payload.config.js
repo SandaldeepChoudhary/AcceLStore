@@ -18,11 +18,11 @@ dotenv_1.default.config({
     path: path_1.default.resolve(__dirname, "../.env"),
 });
 exports.default = (0, config_1.buildConfig)({
-    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
+    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "",
     //!Do not forget to run generate:types before adding a new collection or updating an existing collection
     collections: [Users_1.Users, Products_1.Products, ProductFiles_1.ProductFiles, Media_1.Media, Orders_1.Orders],
     routes: {
-        admin: '/sell'
+        admin: "/sell",
     },
     admin: {
         user: "users",
