@@ -30,7 +30,7 @@ exports.default = (0, config_1.buildConfig)({
         meta: {
             titleSuffix: "- AcceLStore",
             favicon: "/favicon.ico",
-            ogImage: "/thumbnail.jpg",
+            ogImage: "/thumbnail.png",
         },
     },
     rateLimit: {
