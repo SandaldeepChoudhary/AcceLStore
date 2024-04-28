@@ -16,7 +16,7 @@ exports.Orders = {
     slug: "orders",
     admin: {
         useAsTitle: "Your Orders",
-        description: "A summary of all your orders on Accel Mart.",
+        description: "A summary of all your orders on AccelStore.",
     },
     access: {
         read: yourOwn, //You can access to your orders and admin can access all orders

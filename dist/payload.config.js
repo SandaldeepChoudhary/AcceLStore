@@ -28,7 +28,7 @@ exports.default = (0, config_1.buildConfig)({
         user: "users",
         bundler: (0, bundler_webpack_1.webpackBundler)(),
         meta: {
-            titleSuffix: "- AcceL Mart",
+            titleSuffix: "- AcceLStore",
             favicon: "/favicon.ico",
             ogImage: "/thumbnail.jpg",
         },
