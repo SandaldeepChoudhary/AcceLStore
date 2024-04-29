@@ -11,10 +11,20 @@ import nextBuild from "next/dist/build";
 import path from "path";
 import { PayloadRequest } from "payload/types";
 import { parse } from "url";
+import cors from "cors";
 
 const app = express();
 
 const PORT = Number(process.env.PORT) || 3000;
+
+//Cors added
+app.use(
+  cors({
+    origin: process.env.NEXT_PUBLIC_SERVER_URL,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  })
+);
 
 const createContext = ({
   req,
@@ -54,11 +64,10 @@ const start = async () => {
 
     if (!request.user) return res.redirect("/sign-in?origin=cart");
     const parsedUrl = parse(req.url, true);
-    return nextApp.render(req, res, "/cart", parsedUrl.query)
+    return nextApp.render(req, res, "/cart", parsedUrl.query);
   });
 
-
-  app.use("/cart", cartRouter)
+  app.use("/cart", cartRouter);
   // Cart Router Code is For Security
 
   if (process.env.NEXT_BUILD) {
