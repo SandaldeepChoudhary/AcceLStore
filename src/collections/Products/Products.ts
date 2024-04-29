@@ -146,6 +146,8 @@ export const Products: CollectionConfig = {
     {
       name: "price",
       label: "Price in INR",
+      min:0,
+      max: 1000,
       type: "number",
       required: true,
     },
