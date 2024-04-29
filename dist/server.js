@@ -72,8 +72,15 @@ var webhooks_1 = require("./webhooks");
 var build_1 = __importDefault(require("next/dist/build"));
 var path_1 = __importDefault(require("path"));
 var url_1 = require("url");
+var cors_1 = __importDefault(require("cors"));
 var app = (0, express_1.default)();
 var PORT = Number(process.env.PORT) || 3000;
+//Cors added
+app.use((0, cors_1.default)({
+    origin: process.env.NEXT_PUBLIC_SERVER_URL,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+}));
 var createContext = function (_a) {
     var req = _a.req, res = _a.res;
     return ({
@@ -91,7 +98,7 @@ var start = function () { return __awaiter(void 0, void 0, void 0, function () {
                         req.rawBody = buffer;
                     },
                 });
-                app.post("/api/webhooks/stripe", webhookMiddleware, webhooks_1.stripeWebHookHandler);
+                app.post("/api/webhooks/stripe", webhookMiddleware, webhooks_1.stripeWebhookHandler);
                 return [4 /*yield*/, (0, get_payload_1.getPayloadClient)({
                         initOptions: {
                             express: app,
