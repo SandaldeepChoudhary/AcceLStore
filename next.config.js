@@ -3,12 +3,10 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "localhost",
-      },
-      {
-        protocol: "https",
-        hostname: "accelstore.up.railway.app",
+        hostname: 'localhost',
+        pathname: '**',
+        port: '3000',
+        protocol: 'http',
       },
     ],
   },
