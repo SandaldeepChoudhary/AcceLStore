@@ -5,10 +5,9 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "localhost",
-        pathname: "**",
-        port: "3000",
       },
       {
+        protocol: "https",
         hostname: "accelstore.up.railway.app",
       },
     ],
