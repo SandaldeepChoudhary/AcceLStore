@@ -1,5 +1,5 @@
 import express from 'express'
-import { WebHookRequest } from './server'
+import { WebhookRequest } from './server'
 import { stripe } from './lib/stripe'
 import type Stripe from 'stripe'
 import { getPayloadClient } from './get-payload'
@@ -13,7 +13,7 @@ export const stripeWebhookHandler = async (
   req: express.Request,
   res: express.Response
 ) => {
-  const webhookRequest = req as any as WebHookRequest
+  const webhookRequest = req as any as WebhookRequest
   const body = webhookRequest.rawBody
   const signature = req.headers['stripe-signature'] || ''
 

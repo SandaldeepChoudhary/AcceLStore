@@ -1,14 +1,14 @@
-import { z } from "zod";
-import { authRouter } from "./auth-router";
-import { publicProcedure, router } from "./trpc";
-import { QueryValidator } from "../lib/validators/query.validator";
-import { getPayloadClient } from "../get-payload";
-import { paymentRouter } from "./payment-router";
+import { z } from 'zod'
+import { authRouter } from './auth-router'
+import { publicProcedure, router } from './trpc'
+import { QueryValidator } from '../lib/validators/query-validator'
+import { getPayloadClient } from '../get-payload'
+import { paymentRouter } from './payment-router'
 
 export const appRouter = router({
   auth: authRouter,
   payment: paymentRouter,
-  //Logic of getting infinite products
+
   getInfiniteProducts: publicProcedure
     .input(
       z.object({
@@ -18,29 +18,33 @@ export const appRouter = router({
       })
     )
     .query(async ({ input }) => {
-      const { query, cursor } = input;
-      const { sort, limit, ...queryOpts } = query;
-      const payload = await getPayloadClient();
+      const { query, cursor } = input
+      const { sort, limit, ...queryOpts } = query
 
-      const parsedQueryOpts: Record<string, { equals: string }> = {};
+      const payload = await getPayloadClient()
+
+      const parsedQueryOpts: Record<
+        string,
+        { equals: string }
+      > = {}
 
       Object.entries(queryOpts).forEach(([key, value]) => {
         parsedQueryOpts[key] = {
           equals: value,
-        };
-      });
+        }
+      })
 
-      const page = cursor || 1;
+      const page = cursor || 1
 
       const {
         docs: items,
         hasNextPage,
         nextPage,
       } = await payload.find({
-        collection: "products",
+        collection: 'products',
         where: {
-          approvedForSales: {
-            equals: "approved",
+          approvedForSale: {
+            equals: 'approved',
           },
           ...parsedQueryOpts,
         },
@@ -48,14 +52,13 @@ export const appRouter = router({
         depth: 1,
         limit,
         page,
-      });
+      })
 
       return {
         items,
-        //For pagination
         nextPage: hasNextPage ? nextPage : null,
-      };
+      }
     }),
-});
+})
 
-export type AppRouter = typeof appRouter;
+export type AppRouter = typeof appRouter

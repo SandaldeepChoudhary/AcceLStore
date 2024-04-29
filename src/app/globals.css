@@ -1,8 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
-
 
 @layer base {
   :root {
@@ -51,7 +49,6 @@
   }
 }
 
- 
 @layer base {
   * {
     @apply border-border;
@@ -61,17 +58,15 @@
   }
 }
 
-
-/* !important is used to override the default styles */
 .swiper-pagination-bullet {
   width: 7px !important;
   height: 7px !important;
-  background: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.2);
   scale: 0.9 !important;
 }
 
-.swiper-pagination-bullet-active{
+.swiper-pagination-bullet-active {
   color: #fff;
   background: white !important;
-  scale: 1 !important;
+  scale: 1 !important ;
 }

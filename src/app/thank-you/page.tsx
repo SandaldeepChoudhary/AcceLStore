@@ -1,53 +1,61 @@
-import PaymentStatus from "@/components/PaymentStatus";
-import { PRODUCT_CATEGORIES } from "@/config";
-import { getPayloadClient } from "@/get-payload";
-import { getServerSideUser } from "@/lib/payload-utils";
-import { formatPrice } from "@/lib/utils";
-import { Product, ProductFile, User } from "@/payload-types";
-import { cookies } from "next/headers";
-import Image from "next/image";
-import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { getServerSideUser } from '@/lib/payload-utils'
+import Image from 'next/image'
+import { cookies } from 'next/headers'
+import { getPayloadClient } from '@/get-payload'
+import { notFound, redirect } from 'next/navigation'
+import { Product, ProductFile, User } from '@/payload-types'
+import { PRODUCT_CATEGORIES } from '@/config'
+import { formatPrice } from '@/lib/utils'
+import Link from 'next/link'
+import PaymentStatus from '@/components/PaymentStatus'
 
 interface PageProps {
   searchParams: {
-    [key: string]: string | string[] | undefined;
-  };
+    [key: string]: string | string[] | undefined
+  }
 }
 
-const ThankYouPage = async ({ searchParams }: PageProps) => {
-  const orderId = searchParams.orderId;
-  const nextCookies = cookies();
-  const fee = 1;
+const ThankYouPage = async ({
+  searchParams,
+}: PageProps) => {
+  const orderId = searchParams.orderId
+  const nextCookies = cookies()
 
-  const { user } = await getServerSideUser(nextCookies);
-  const payload = await getPayloadClient();
+  const { user } = await getServerSideUser(nextCookies)
+  const payload = await getPayloadClient()
 
   const { docs: orders } = await payload.find({
-    collection: "orders",
+    collection: 'orders',
     depth: 2,
     where: {
       id: {
         equals: orderId,
       },
     },
-  });
+  })
 
-  const [order] = orders;
-  //If order not found
-  if (!order) return notFound();
+  const [order] = orders
+
+  if (!order) return notFound()
+
   const orderUserId =
-    typeof order.user === "string" ? order.user : order.user.id;
-  //If the user is not logged in and tried to access the thank your page then the user after successful login gets redirected to thank-you page
+    typeof order.user === 'string'
+      ? order.user
+      : order.user.id
+
   if (orderUserId !== user?.id) {
-    return redirect(`/sign-in?origin=thank-you?orderId=${order.id}`);
+    return redirect(
+      `/sign-in?origin=thank-you?orderId=${order.id}`
+    )
   }
 
   const products = order.products as Product[]
-  const orderTotal = products.reduce((total, product)=>{
+
+  const orderTotal = products.reduce((total, product) => {
     return total + product.price
   }, 0)
- return (
+
+  return (
     <main className='relative lg:min-h-full'>
       <div className='hidden lg:block h-80 overflow-hidden lg:absolute lg:h-full lg:w-1/2 lg:pr-4 xl:pr-12'>
         <Image
@@ -89,7 +97,7 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
 
             <div className='mt-16 text-sm font-medium'>
               <div className='text-muted-foreground'>
-                Order no.
+                Order nr.
               </div>
               <div className='mt-2 text-gray-900'>
                 {order.id}
@@ -179,7 +187,6 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
               </div>
 
               <PaymentStatus
-              //@ts-ignore
                 isPaid={order._isPaid}
                 orderEmail={(order.user as User).email}
                 orderId={order.id}
@@ -198,6 +205,6 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
       </div>
     </main>
   )
-};
+}
 
-export default ThankYouPage;
+export default ThankYouPage
