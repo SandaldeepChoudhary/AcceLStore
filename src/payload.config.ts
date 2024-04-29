@@ -26,7 +26,7 @@ export default buildConfig({
     meta: {
       titleSuffix: '- AcceLStore',
       favicon: '/favicon.ico',
-      ogImage: '/thumbnail.png',
+      ogImage: '/thumbnail.jpg',
     },
   },
   rateLimit: {
