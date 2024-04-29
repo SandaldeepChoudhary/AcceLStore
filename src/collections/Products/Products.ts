@@ -180,7 +180,7 @@ export const Products: CollectionConfig = {
       hasMany: false,
     },
     {
-      name: 'approvedForSale',
+      name: 'approvedForSales',
       label: 'Product Status',
       type: 'select',
       defaultValue: 'pending',
